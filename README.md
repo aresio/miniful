@@ -1,3 +1,2 @@
-# stfu
-A very STraightforward Fuzzy Utility
-
+# FUSS
+Fuzzy Utility, Simple and Stupid
