@@ -1,2 +1,2 @@
-# FUSS
-Fuzzy Utility, Simple and Stupid
+# Miniful
+A very minimal fuzzy logic python library
