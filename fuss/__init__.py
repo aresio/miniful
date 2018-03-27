@@ -1,1 +1,0 @@
-from stfu import *
