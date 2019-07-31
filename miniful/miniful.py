@@ -1,4 +1,3 @@
-#!/usr/bin/python
 from __future__ import print_function
 from numpy import array, linspace, ravel, meshgrid
 from scipy.interpolate import interp1d
@@ -135,7 +134,7 @@ class FuzzyReasoner(object):
 
 		return_values = {}
 		for k,v in outputs.items():
-			num = sum(map(lambda p: p[0]*p[1], v))
+			num = sum(map(lambda x: x[0]*x[1], v))
 			den = sum([i for i,j in v])
 			if den==0: return_values[k] = 0
 			else: return_values[k] = num/den
