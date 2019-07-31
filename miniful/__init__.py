@@ -1,1 +1,1 @@
-from miniful import *
+from .miniful import *

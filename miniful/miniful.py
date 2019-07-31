@@ -1,5 +1,5 @@
 #!/usr/bin/python
-
+from __future__ import print_function
 from numpy import array, linspace, ravel, meshgrid
 from scipy.interpolate import interp1d
 from collections import defaultdict
@@ -10,21 +10,19 @@ class MembershipFunction(object):
 
 	def __init__(self, FS_list=[], concept=""):
 		if FS_list==[]:
-			print "ERROR: please specify at least one fuzzy set"
+			print ("ERROR: please specify at least one fuzzy set")
 			exit(-2)
 		if concept=="":
-			print "ERROR: please specify a concept connected to the MF"
+			print ("ERROR: please specify a concept connected to the MF")
 			exit(-3)
 
 		self._FSlist = FS_list
 		self._concept = concept
 
 	def get_values(self, v):
-		#print "Getting MF(%f).." % (v)
 		result = {}
 		for fs in self._FSlist:
 			result[fs._term] = fs.get_value(v)
-		#print "Results in get_values:", result
 		return result
 
 	def get_universe_of_discourse(self):
@@ -56,23 +54,23 @@ class FuzzySet(object):
 
 	def __init__(self, points=None, term="", verbose=False):
 		if len(points)<2: 
-			print "ERROR: more than one point required"
+			print ("ERROR: more than one point required")
 			exit(-1)
 		if term=="":
-			print "ERROR: please specify a linguistic term"
+			print ("ERROR: please specify a linguistic term")
 			exit(-3)
 
 		if verbose:
 			if len(points)==2: # singleton
 				pass
 			elif len(points)==3: # triangle
-				print "Triangle fuzzy set required:", points
+				print ("Triangle fuzzy set required:", points)
 				self._type = "TRIANGLE"
 			elif len(points)==4: # trapezoid
-				print "Trapezoid fuzzy set required:", points
+				print ("Trapezoid fuzzy set required:", points)
 				self._type = "TRAPEZOID"
 			else:
-				print "Polygon set required:", points
+				print ("Polygon set required:", points)
 				self._type = "POLYGON"
 
 		self._points = array(points)
@@ -92,7 +90,7 @@ class FuzzyRule(object):
 		self._antecedent = antecedent
 		self._consequent = consequent
 		self._comment = comment
-		if verbose: print "Rule '%s': IF %s IS %s THEN %s IS %s" % (comment, antecedent[0], antecedent[1], consequent[0], consequent[1])
+		if verbose: print ("Rule '%s': IF %s IS %s THEN %s IS %s" % (comment, antecedent[0], antecedent[1], consequent[0], consequent[1]))
 
 	def __repr__(self):
 		return self._comment
@@ -101,7 +99,7 @@ class FuzzyRule(object):
 		try:
 			variable = variables[self._antecedent[0]._concept]
 		except KeyError:
-			print "ERROR: variable", self._antecedent[0]._concept, "not initialized"
+			print ("ERROR: variable", self._antecedent[0]._concept, "not initialized")
 			exit(-9)
 		result = self._antecedent[0].get_values(variable)
 		final_result = result[self._antecedent[1]]
@@ -137,7 +135,7 @@ class FuzzyReasoner(object):
 
 		return_values = {}
 		for k,v in outputs.items():
-			num = sum(map(lambda (x,y): x*y, v))
+			num = sum(map(lambda p: p[0]*p[1], v))
 			den = sum([i for i,j in v])
 			if den==0: return_values[k] = 0
 			else: return_values[k] = num/den
@@ -152,7 +150,7 @@ class FuzzyReasoner(object):
 		from matplotlib.ticker import LinearLocator, FormatStrFormatter
 	
 		if len(variables)>2: 
-			print "Unable to plot more than 3 dimensions, aborting."
+			print ("Unable to plot more than 3 dimensions, aborting.")
 			exit(-10)
 		
 		if len(variables)==2:
@@ -165,11 +163,11 @@ class FuzzyReasoner(object):
 			X, Y = meshgrid(inter1, inter2)
 
 			def wrapper(x,y):
-				print x,y
+				print (x,y)
 				self.set_variable(variables[0]._concept, x)
 				self.set_variable(variables[1]._concept, y)
 				res = self.evaluate_rules()
-				print res
+				print (res)
 				return res[output]
 			
 			zs = array([wrapper(x,y) for x,y in zip(ravel(X), ravel(Y))])
