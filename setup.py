@@ -2,7 +2,7 @@ from distutils.core import setup
 setup(
   name = 'miniful',
   packages = ['miniful'], # this must be the same as the name above
-  version = '0.0.5',
+  version = '0.0.6',
   description = 'Minimal Fuzzy Library',
   author = 'Marco S. Nobile',
   author_email = 'nobile@disco.unimib.it',
